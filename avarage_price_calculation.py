@@ -19,10 +19,10 @@ def product_data_processing():
     for i_indx, i_row in data_frame.iterrows():
         i_product_id = i_indx
         i_product_title = i_row["Название товара"]
-        i_product_price = i_row["Цена товара"]
+        i_product_price = str(i_row["Цена товара"])
 
         # проверяем наличие в товаре цены
-        if isinstance(i_product_price, int):
+        if i_product_price.isdigit:
             splitted_title = i_product_title.split()
             title_for_url = '+'.join(splitted_title)
             url_for_func = ''.join(['https://www.avito.ru/rossiya?q=', title_for_url])
@@ -88,7 +88,7 @@ def req_for_avarage_price(url: str) -> float:
     options.add_argument(f'user-agent={user_agent.random}')
     options.add_argument('--disable-blink-features=AutomationControlled')
     driver = webdriver.Chrome(
-        executable_path=r'C:\Users\1\OneDrive\Рабочий стол\Pet-проект\profitable-goods-parser-avito\avito-profitable-goods-parser\chromedriver\chromedriver.exe',
+        executable_path=r'.\chromedriver\chromedriver.exe',
         options=options,
     )
     stealth(

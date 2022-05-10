@@ -22,7 +22,7 @@ def parse_products(numb_of_pages: int, url: str) -> None:
     options.add_argument(f'user-agent={user_agent.random}')
     options.add_argument('--disable-blink-features=AutomationControlled')
     driver = webdriver.Chrome(
-        executable_path=r'C:\Users\1\OneDrive\Рабочий стол\Pet-проект\profitable-goods-parser-avito\avito-profitable-goods-parser\chromedriver\chromedriver.exe',
+        executable_path=r'.\chromedriver\chromedriver.exe',
         options=options,
     )
 
