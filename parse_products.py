@@ -58,7 +58,6 @@ def parse_products(numb_of_pages: int, url: str) -> None:
         for i_page in range(1, numb_of_pages + 1):
             # в url запросе для движения по страницам может быть и параметр cd, вместо p
             page_url = '/'.join([url, f'?p={i_page}'])
-            print(f' Запрос по адресу: {page_url}')
             driver.get(page_url)
             time.sleep(0.5)
             product_list = driver.find_elements(by=By.CLASS_NAME, value='iva-item-content-rejJg')

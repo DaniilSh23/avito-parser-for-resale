@@ -17,7 +17,6 @@ def product_data_processing():
     data_frame_for_processing = pd.DataFrame()
 
     for i_indx, i_row in data_frame.iterrows():
-        print(f'Айдишник {i_indx}\n Строка {i_row["Название товара"]}')
         i_product_id = i_indx
         i_product_title = i_row["Название товара"]
         i_product_price = i_row["Цена товара"]
@@ -41,7 +40,6 @@ def product_data_processing():
         }
         # добавляем запись в DataFrame
         data_frame_for_processing = data_frame_for_processing.append(new_row, ignore_index=True)
-        print(f'===================================\n{data_frame_for_processing}')
 
 
     else:
