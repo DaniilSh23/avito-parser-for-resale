@@ -22,7 +22,7 @@ def product_data_processing():
         i_product_price = str(i_row["Цена товара"])
 
         # проверяем наличие в товаре цены
-        if i_product_price.isdigit:
+        if i_product_price.isdigit():
             splitted_title = i_product_title.split()
             title_for_url = '+'.join(splitted_title)
             url_for_func = ''.join(['https://www.avito.ru/rossiya?q=', title_for_url])
@@ -40,7 +40,6 @@ def product_data_processing():
         }
         # добавляем запись в DataFrame
         data_frame_for_processing = data_frame_for_processing.append(new_row, ignore_index=True)
-
 
     else:
         with open('sec_step_parse.csv', 'a', encoding='cp1251', newline='') as sec_file:
@@ -101,6 +100,10 @@ def req_for_avarage_price(url: str) -> float:
         fix_hairline=True,
     )
 
+    summ_prices = 0
+    product_counter = 0
+    avarage_market_price = 1
+
     try:
         # делаем запрос
         driver.get(url)
@@ -110,8 +113,6 @@ def req_for_avarage_price(url: str) -> float:
         product_list = driver.find_elements(by=By.CLASS_NAME, value='iva-item-content-rejJg')
 
         product_price_cls = 'iva-item-priceStep-uq2CQ'
-        summ_prices = 0
-        non_price_objects = 0
 
         # суммируем цены всех объявлений
         for i_num, i_product in enumerate(product_list):
@@ -121,18 +122,16 @@ def req_for_avarage_price(url: str) -> float:
             i_product_price = i_product_price.find_element(by=By.TAG_NAME, value='span').text.replace(' ', '').replace(
                 '₽', '')
 
-            # если цена в товаре не указана
-            if not i_product_price.isdigit():
-                # добавим значение, которое скорректируем потом наш расчёт средней цены
-                non_price_objects += 1
-                continue
-            summ_prices += float(i_product_price)
-
-        # считаем среднюю цену объявлений 1-й страницы
-        avarage_market_price = summ_prices / (len(product_list) - non_price_objects)
+            # проверяем наличие цены в товаре
+            if i_product_price.isdigit():
+                summ_prices += float(i_product_price)
+                product_counter += 1
+        if isinstance(summ_prices, float):
+            avarage_market_price = summ_prices / product_counter
 
     except Exception as error:
-        print(f'При запросе для поиска средней цены произошла ошибка \n{error}')
+        print(f'При запросе для поиска средней цены произошла ошибка \n{error}\n'
+              f'Адрес для запроса данного товара: \n{url}')
     finally:
         driver.close()
         driver.quit()
